@@ -2,13 +2,6 @@ from events_app import db
 from sqlalchemy.orm import backref
 import enum
 
-# TODO: Create a model called `Guest` with the following fields:
-# - id: primary key
-# - name: String column
-# - email: String column
-# - phone: String column
-# - events_attending: relationship to "Event" table with a secondary table
-
 class FormEnum(enum.Enum):
     """Helper class to make it easier to use enums with forms."""
     @classmethod
@@ -32,15 +25,6 @@ class Guest(db.Model):
     def __repr__(self):
         return f'{self.name}'
 
-# TODO: Create a model called `Event` with the following fields:
-# - id: primary key
-# - title: String column
-# - description: String column
-# - date_and_time: DateTime column
-# - guests: relationship to "Guest" table with a secondary table
-
-# STRETCH CHALLENGE: Add a field `event_type` as an Enum column that denotes the
-# type of event (Party, Study, Networking, etc)
 
 class EventType(FormEnum):
     NONE = 'Not Specified'
@@ -57,9 +41,10 @@ class Event(db.Model):
     title = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(200), nullable=False)
     date_and_time = db.Column(db.Date, nullable=False)
-    guests = db.relationship(
-        'Guest', secondary="guest_events", back_populates="events")
     category = db.Column(db.Enum(EventType), default=EventType.NONE)
+    guests = db.relationship(
+        'Guest', secondary="guest_events", back_populates="events_attending")
+
     
     def __str__(self):
         return f'{self.title}'
