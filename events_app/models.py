@@ -40,7 +40,7 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(200), nullable=False)
-    date_and_time = db.Column(db.Date, nullable=False)
+    date_and_time = db.Column(db.DateTime, nullable=False)
     category = db.Column(db.Enum(EventType), default=EventType.NONE)
     guests = db.relationship(
         'Guest', secondary="guest_events", back_populates="events_attending")

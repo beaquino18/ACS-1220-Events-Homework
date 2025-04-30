@@ -7,13 +7,13 @@
     <p>
         <label>
             Event Title:
-            <input type="text" name="title">
+            <input type="text" name="title" id="title" required>
         </label>
     </p>
     <p>
         <label>
             Event Description: <br>
-            <textarea name="description"></textarea>
+            <input type="textarea" name="description" required></textarea>
         </label>
     </p>
     {% if error %}
@@ -25,6 +25,15 @@
             Date and Time: <br>
             <input type="date" name="date" placeholder="Date format YYYY-mm-dd">
             <input type="time" name="time" placeholder="Time format HH:MM">
+        </label>
+    </p>
+    <p>
+        <label> Category: <br>
+            <select name="category">
+                {% for category in EventType %}
+                    <option value="{{ category.name }}">{{ category.value }}</option>
+                {% endfor %}
+            </select>
         </label>
     </p>
     <p>

@@ -59,7 +59,7 @@ def create():
         flash('Event created.')
         return redirect(url_for('main.index'))
     else:
-        return render_template('create.html')
+        return render_template('create.html', EventType=EventType)
 
 
 @main.route('/event/<event_id>', methods=['GET'])
@@ -78,9 +78,10 @@ def rsvp(event_id):
     # Get the event with the given id from the database
     event = Event.query.get_or_404(event_id)
     is_returning_guest = request.form.get('returning')
-    guest_name = request.form.get('guest_name')
+    
 
     if is_returning_guest:
+        guest_name = request.form.get('guest_name')
         # Query guest by name
         guest = Guest.query.filter_by(name = guest_name).first()
         
@@ -96,10 +97,15 @@ def rsvp(event_id):
         db.session.commit()
     else:
         # For new guest, get all their information
-        guest_name = request.form.get('name')
+        guest_name = request.form.get('guest_name')
         guest_email = request.form.get('email')
         guest_phone = request.form.get('phone')
 
+        # Check if name was provided
+        if not guest_name:
+            return render_template("event_detail.html",
+                            event=event,
+                            error="Name is required for new guests")
         # Create a new guest
         new_guest = Guest(
             name = guest_name,
